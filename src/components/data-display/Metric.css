@@ -1,0 +1,14 @@
+.metric {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.metric strong {
+  color: var(--color-text);
+  font-size: 24px;
+}
+
+.metric span {
+  color: var(--color-muted);
+  font-size: 12px;
+}

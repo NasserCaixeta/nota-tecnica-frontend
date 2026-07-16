@@ -1,0 +1,31 @@
+.status-pill {
+  align-items: center;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  color: var(--color-muted);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 700;
+  min-height: 24px;
+  padding: 0 var(--space-2);
+}
+
+.status-pill--success {
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.status-pill--warning {
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.status-pill--danger {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+}
+
+.status-pill--accent {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
