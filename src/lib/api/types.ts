@@ -58,6 +58,9 @@ export type GarageVehicleItem = {
   model_year: number;
   relationship_type: VehicleRelationshipType;
   garage_status: GarageValidationStatus;
+  commercial_access: "free" | "subscription" | "read_only";
+  admin_review_note: string | null;
+  review_version: number;
   verification_rejection_reason: string | null;
   review_attempts: number;
   permissions: GaragePermissions;
@@ -65,6 +68,10 @@ export type GarageVehicleItem = {
     required: ValidationDocumentType[];
     uploaded: ValidationDocumentType[];
     missing: ValidationDocumentType[];
+    missing_uploads: ValidationDocumentType[];
+    awaiting_review: ValidationDocumentType[];
+    rejected: ValidationDocumentType[];
+    approved: ValidationDocumentType[];
   };
   maintenance_alerts: Array<Record<string, string>>;
   recommended_workshops: Array<{

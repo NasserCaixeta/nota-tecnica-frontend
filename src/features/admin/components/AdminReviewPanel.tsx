@@ -25,7 +25,7 @@ export function AdminReviewPanel({ item, isSubmitting, onApprove, onReject }: Ad
       <div className="stack">
         <p className="muted">Documentos enviados: {item.uploaded_documents.join(", ") || "nenhum"}</p>
         <p className="muted">Documentos faltantes: {item.missing_documents.join(", ") || "nenhum"}</p>
-        <Button disabled={isSubmitting} onClick={onApprove} type="button">
+        <Button disabled={isSubmitting || item.garage_status !== "under_review" || item.required_documents.some(kind => !item.approved_documents.includes(kind))} onClick={onApprove} type="button">
           Aprovar
         </Button>
         <form className="stack" onSubmit={handleReject}>
