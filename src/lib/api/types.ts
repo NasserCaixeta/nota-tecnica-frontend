@@ -1,3 +1,4 @@
+export type ParticipationStatus = "pending" | "approved" | "rejected" | "suspended";
 export type UserProfileType = "customer" | "workshop_owner" | "admin";
 export type GarageValidationStatus =
   | "pending_documents"
@@ -30,6 +31,12 @@ export type UserRead = {
   email: string;
   cpf: string;
   profile_type: UserProfileType;
+  is_admin: boolean;
+  participation_status: ParticipationStatus;
+  participation_version: number;
+  participation_reason: string | null;
+  capabilities: string[];
+  phone?: string;
   city: string;
   state: string;
 };

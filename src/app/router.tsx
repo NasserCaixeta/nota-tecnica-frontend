@@ -1,4 +1,7 @@
-import type { RouteObject } from "react-router-dom";
+import { Navigate, Outlet, type RouteObject } from "react-router-dom";
+import { SessionProvider } from "../lib/auth/SessionProvider";
+import { PilotStatusPage } from "../features/auth/pages/PilotStatusPage";
+import { ParticipantQueuePage } from "../features/admin/pages/ParticipantQueuePage";
 
 import { AdminShell } from "../components/layout/AdminShell";
 import { AppShell } from "../components/layout/AppShell";
@@ -20,7 +23,9 @@ import { WorkshopRankingPage } from "../features/public/pages/WorkshopRankingPag
 import { ManagedWorkshopsPage } from "../features/workshops/pages/ManagedWorkshopsPage";
 import { NewWorkshopPage } from "../features/workshops/pages/NewWorkshopPage";
 
-export const routes: RouteObject[] = [
+const routeDefinitions: RouteObject[] = [
+  { path: "/app/participacao", element: <AuthGuard requireApproved={false}><PilotStatusPage /></AuthGuard> },
+  { path: "*", element: <section><h1>Página não encontrada</h1></section> },
   {
     element: <PublicShell />,
     children: [
@@ -40,6 +45,7 @@ export const routes: RouteObject[] = [
       </AuthGuard>
     ),
     children: [
+      { index: true, element: <Navigate replace to="garagem" /> },
       { path: "garagem", element: <GarageDashboardPage /> },
       { path: "garagem/novo", element: <AddGarageVehiclePage /> },
       { path: "garagem/:vehicleId", element: <GarageVehicleDetailPage /> },
@@ -52,13 +58,17 @@ export const routes: RouteObject[] = [
   {
     path: "/admin",
     element: (
-      <AuthGuard>
+      <AuthGuard requireAdmin>
         <AdminShell />
       </AuthGuard>
     ),
     children: [
+      { index: true, element: <Navigate replace to="participantes" /> },
+      { path: "participantes", element: <ParticipantQueuePage /> },
       { path: "validacoes", element: <AdminValidationQueuePage /> },
       { path: "validacoes/:vehicleLinkId", element: <AdminValidationDetailPage /> },
     ],
   },
 ];
+
+export const routes: RouteObject[] = [{ element: <SessionProvider><Outlet /></SessionProvider>, children: routeDefinitions }];

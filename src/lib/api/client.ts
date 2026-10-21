@@ -1,4 +1,4 @@
-import { getStoredToken } from "../auth/token-storage";
+import { clearStoredToken, getStoredToken } from "../auth/token-storage";
 
 const DEFAULT_API_BASE_URL = "http://localhost:8000/api/v1";
 
@@ -37,11 +37,20 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
     headers,
   });
   const text = await response.text();
-  const data = text ? JSON.parse(text) : null;
+  let data: unknown = null;
+  if (text) {
+    try { data = JSON.parse(text); }
+    catch {
+      if (response.ok) throw new ApiError("Resposta inválida da API", response.status, null);
+      data = null;
+    }
+  }
+  const detail = data && typeof data === "object" && "detail" in data ? data.detail : null;
 
   if (!response.ok) {
+    if (response.status === 401 && options.auth !== false && token && token === getStoredToken()) clearStoredToken();
     throw new ApiError(
-      typeof data?.detail === "string" ? data.detail : "Erro ao comunicar com a API",
+      typeof detail === "string" ? detail : "Erro ao comunicar com a API",
       response.status,
       data,
     );

@@ -1,8 +1,10 @@
 import { Link, Outlet } from "react-router-dom";
 
 import "./Shell.css";
+import { useSession } from "../../lib/auth/SessionContext";
 
 export function AppShell() {
+  const { user, logout } = useSession();
   return (
     <div className="shell shell--app">
       <aside className="shell__sidebar">
@@ -11,7 +13,10 @@ export function AppShell() {
         </Link>
         <nav className="shell__side-nav" aria-label="Navegação do app">
           <Link to="/app/garagem">Garagem</Link>
-          <Link to="/app/oficinas/minhas">Oficinas</Link>
+          <Link to="/app/oficinas">Oficinas</Link>
+          <Link to="/app/participacao">Minha conta</Link>
+          {user?.is_admin && <Link to="/admin/participantes">Administração</Link>}
+          <button type="button" onClick={logout}>Sair</button>
         </nav>
       </aside>
       <main className="shell__main">
