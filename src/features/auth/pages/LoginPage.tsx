@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { loginBenefits } from "../../../content/auth";
-import { login } from "../../../lib/api/auth";
+import { getCurrentUser, login } from "../../../lib/api/auth";
 import { setStoredToken } from "../../../lib/auth/token-storage";
 import { LoginForm, type LoginFormValues } from "../components/LoginForm";
 import "./LoginPage.css";
@@ -18,7 +18,8 @@ export function LoginPage() {
     try {
       const response = await login(values);
       setStoredToken(response.access_token);
-      navigate("/app/garagem");
+      const user = await getCurrentUser();
+      navigate(user.participation_status === "approved" ? "/app/garagem" : "/app/participacao");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Não foi possível entrar.");
     } finally {

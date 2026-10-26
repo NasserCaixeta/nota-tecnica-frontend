@@ -1,3 +1,4 @@
+export type ParticipationStatus = "pending" | "approved" | "rejected" | "suspended";
 export type UserProfileType = "customer" | "workshop_owner" | "admin";
 export type GarageValidationStatus =
   | "pending_documents"
@@ -30,6 +31,12 @@ export type UserRead = {
   email: string;
   cpf: string;
   profile_type: UserProfileType;
+  is_admin: boolean;
+  participation_status: ParticipationStatus;
+  participation_version: number;
+  participation_reason: string | null;
+  capabilities: string[];
+  phone?: string;
   city: string;
   state: string;
 };
@@ -51,6 +58,9 @@ export type GarageVehicleItem = {
   model_year: number;
   relationship_type: VehicleRelationshipType;
   garage_status: GarageValidationStatus;
+  commercial_access: "free" | "subscription" | "read_only";
+  admin_review_note: string | null;
+  review_version: number;
   verification_rejection_reason: string | null;
   review_attempts: number;
   permissions: GaragePermissions;
@@ -58,6 +68,10 @@ export type GarageVehicleItem = {
     required: ValidationDocumentType[];
     uploaded: ValidationDocumentType[];
     missing: ValidationDocumentType[];
+    missing_uploads: ValidationDocumentType[];
+    awaiting_review: ValidationDocumentType[];
+    rejected: ValidationDocumentType[];
+    approved: ValidationDocumentType[];
   };
   maintenance_alerts: Array<Record<string, string>>;
   recommended_workshops: Array<{

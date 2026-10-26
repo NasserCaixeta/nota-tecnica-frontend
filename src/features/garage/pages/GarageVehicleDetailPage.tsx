@@ -1,40 +1,27 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
-import { StateBlock } from "../../../components/data-display/StateBlock";
-import { Button } from "../../../components/ui/Button";
 import { getGarageVehicle } from "../../../lib/api/garage";
 import type { GarageVehicleItem } from "../../../lib/api/types";
 import { DocumentChecklist } from "../components/DocumentChecklist";
-
+import { garageStatusLabels } from "../../../content/status-labels";
 export function GarageVehicleDetailPage() {
   const { vehicleId } = useParams();
   const [vehicle, setVehicle] = useState<GarageVehicleItem | null>(null);
-
-  useEffect(() => {
-    if (vehicleId) {
-      getGarageVehicle(Number(vehicleId)).then(setVehicle);
-    }
+  const [error, setError] = useState<string | null>(null);
+  const load = useCallback(async () => {
+    setError(null);
+    try { setVehicle(await getGarageVehicle(Number(vehicleId))); }
+    catch (caught) { setError(caught instanceof Error ? caught.message : "Não foi possível carregar o veículo."); }
   }, [vehicleId]);
-
-  if (!vehicle) {
-    return <p>Carregando veículo...</p>;
-  }
-
-  return (
-    <main>
-      <h1>{vehicle.plate}</h1>
-      <p>
-        {vehicle.brand} {vehicle.model} {vehicle.model_year}
-      </p>
-      <DocumentChecklist vehicle={vehicle} />
-      <Link to={`/app/garagem/${vehicle.vehicle_id}/documentos`}>
-        <Button disabled={!vehicle.permissions.can_upload_documents}>Enviar documentos</Button>
-      </Link>
-      <StateBlock
-        title="Relatório para venda"
-        message="Este recurso ainda não está disponível nesta versão."
-      />
-    </main>
-  );
+  useEffect(() => { void load(); }, [load]);
+  if (error) return <section role="alert"><p>{error}</p><button onClick={() => void load()}>Tentar novamente</button></section>;
+  if (!vehicle) return <p role="status">Carregando veículo...</p>;
+  return <section className="page-section"><h1>{vehicle.plate}</h1>
+    <p>{vehicle.brand} {vehicle.model} {vehicle.model_year}</p><p>{garageStatusLabels[vehicle.garage_status]}</p>
+    {vehicle.commercial_access === "read_only" && <p>Este veículo está disponível para leitura. Uma assinatura libera novos lançamentos nos veículos adicionais.</p>}
+    {vehicle.admin_review_note && <p>{vehicle.admin_review_note}</p>}
+    <DocumentChecklist vehicle={vehicle} />
+    <Link to={`/app/garagem/${vehicle.vehicle_id}/documentos`}>Acompanhar documentos e análise</Link>
+    {vehicle.permissions.can_add_maintenance && <p><Link to={`/app/garagem/${vehicle.vehicle_id}/manutencoes/nova`}>Registrar manutenção</Link></p>}
+  </section>;
 }

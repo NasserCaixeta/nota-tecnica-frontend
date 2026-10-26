@@ -25,3 +25,7 @@ export function updateGarageRelationship(
     body: JSON.stringify(payload),
   });
 }
+
+export function submitGarageReview(vehicleLinkId: number, resubmit = false) {
+  return apiRequest(`/garage/vehicle-links/${vehicleLinkId}/${resubmit ? "resubmit-review" : "submit-review"}`, { method: "POST" });
+}

@@ -16,6 +16,9 @@ describe("GarageVehicleCard", () => {
           model_year: 2020,
           relationship_type: "owner",
           garage_status: "pending_documents",
+          commercial_access: "free",
+          admin_review_note: null,
+          review_version: 1,
           verification_rejection_reason: null,
           review_attempts: 0,
           permissions: {
@@ -25,7 +28,7 @@ describe("GarageVehicleCard", () => {
             can_share_history: false,
             can_generate_sale_report: false,
           },
-          documents: { required: ["crlv"], uploaded: [], missing: ["crlv"] },
+          documents: { required: ["crlv"], uploaded: [], missing: ["crlv"], missing_uploads: ["crlv"], awaiting_review: [], rejected: [], approved: [] },
           maintenance_alerts: [],
           recommended_workshops: [],
           created_at: "2026-07-08T00:00:00Z",

@@ -18,8 +18,10 @@ export function getStoredToken() {
 
 export function setStoredToken(token: string) {
   browserStorage()?.setItem(TOKEN_KEY, token);
+  if (typeof window !== "undefined") window.dispatchEvent(new Event("nota-tecnica:session"));
 }
 
 export function clearStoredToken() {
   browserStorage()?.removeItem(TOKEN_KEY);
+  if (typeof window !== "undefined") window.dispatchEvent(new Event("nota-tecnica:session"));
 }
