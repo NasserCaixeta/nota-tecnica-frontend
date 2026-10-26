@@ -1,3 +1,5 @@
+import { WorkshopClaimPage } from "../features/workshops/pages/WorkshopClaimPage";
+import { WorkshopClaimsPage } from "../features/admin/pages/WorkshopClaimsPage";
 import { Navigate, Outlet, type RouteObject } from "react-router-dom";
 import { SessionProvider } from "../lib/auth/SessionProvider";
 import { PilotStatusPage } from "../features/auth/pages/PilotStatusPage";
@@ -18,7 +20,7 @@ import { GarageVehicleDocumentsPage } from "../features/garage/pages/GarageVehic
 import { NewMaintenancePage } from "../features/maintenance/pages/NewMaintenancePage";
 import { LandingPage } from "../features/public/pages/LandingPage";
 import { PlateSearchPage } from "../features/public/pages/PlateSearchPage";
-import { WorkshopProfilePage } from "../features/public/pages/WorkshopProfilePage";
+import { WorkshopProfilePage } from "../features/workshops/pages/WorkshopProfilePage";
 import { WorkshopRankingPage } from "../features/public/pages/WorkshopRankingPage";
 import { ManagedWorkshopsPage } from "../features/workshops/pages/ManagedWorkshopsPage";
 import { NewWorkshopPage } from "../features/workshops/pages/NewWorkshopPage";
@@ -53,6 +55,7 @@ const routeDefinitions: RouteObject[] = [
       { path: "garagem/:vehicleId/manutencoes/nova", element: <NewMaintenancePage /> },
       { path: "oficinas", element: <ManagedWorkshopsPage /> },
       { path: "oficinas/nova", element: <NewWorkshopPage /> },
+      { path: "oficinas/reivindicar", element: <WorkshopClaimPage /> },
     ],
   },
   {
@@ -65,6 +68,7 @@ const routeDefinitions: RouteObject[] = [
     children: [
       { index: true, element: <Navigate replace to="participantes" /> },
       { path: "participantes", element: <ParticipantQueuePage /> },
+      { path: "oficinas", element: <WorkshopClaimsPage /> },
       { path: "validacoes", element: <AdminValidationQueuePage /> },
       { path: "validacoes/:vehicleLinkId", element: <AdminValidationDetailPage /> },
     ],

@@ -11,3 +11,9 @@ describe("WorkshopForm", () => {
     expect(screen.getByLabelText(/Nome fantasia/i)).toBeInTheDocument();
   });
 });
+
+
+it("asks for the complete address required to validate a workshop", () => {
+  render(<WorkshopForm onSubmit={() => undefined} isSubmitting={false} />);
+  for (const label of ["CEP", "Rua", "Número", "Bairro"]) expect(screen.getByLabelText(label)).toBeRequired();
+});

@@ -16,8 +16,8 @@ export function NewWorkshopPage() {
     try {
       await createWorkshop(payload);
       navigate("/app/oficinas");
-    } catch {
-      setError("Não foi possível cadastrar a oficina.");
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : "Não foi possível cadastrar a oficina. Confira CNPJ e endereço.");
     } finally {
       setSubmitting(false);
     }
@@ -25,6 +25,7 @@ export function NewWorkshopPage() {
 
   return (
     <section className="page-section">
+      <p>Após o cadastro, envie os documentos de representação. A gestão será liberada depois da aprovação.</p>
       <WorkshopForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
       {error ? <p className="form-error">{error}</p> : null}
     </section>

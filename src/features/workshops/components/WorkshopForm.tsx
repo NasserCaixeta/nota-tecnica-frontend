@@ -11,6 +11,8 @@ type WorkshopFormProps = {
 };
 
 const initialPayload: WorkshopPayload = {
+  source: "owner_claimed",
+  zip_code: "", street: "", number: "", neighborhood: "", complement: "",
   legal_name: "",
   trade_name: "",
   cnpj: "",
@@ -66,17 +68,21 @@ export function WorkshopForm({ isSubmitting, onSubmit }: WorkshopFormProps) {
         />
         <Input
           label="Telefone"
-          name="phone"
+          name="phone" required
           value={payload.phone}
           onChange={(event) => updateField("phone", event.target.value)}
         />
         <Input
           label="E-mail"
-          name="email"
+          name="email" required
           type="email"
           value={payload.email}
           onChange={(event) => updateField("email", event.target.value)}
         />
+        <Input label="CEP" name="zip_code" value={payload.zip_code} required onChange={event => updateField("zip_code", event.target.value)} />
+        <Input label="Rua" name="street" value={payload.street} required onChange={event => updateField("street", event.target.value)} />
+        <Input label="Número" name="number" value={payload.number} required onChange={event => updateField("number", event.target.value)} />
+        <Input label="Bairro" name="neighborhood" value={payload.neighborhood} required onChange={event => updateField("neighborhood", event.target.value)} />
         <Input
           label="Cidade"
           name="city"
@@ -94,7 +100,7 @@ export function WorkshopForm({ isSubmitting, onSubmit }: WorkshopFormProps) {
         />
         <Input
           label="Especialidades"
-          name="specialties"
+          name="specialties" required
           value={specialties}
           onChange={(event) => setSpecialties(event.target.value)}
         />

@@ -26,3 +26,13 @@ export async function uploadValidationDocument(params: {
 export function getDocumentDownload(documentId: number) {
   return apiRequest<{ url: string; expires_at: string }>(`/documents/${documentId}/download`);
 }
+
+export async function uploadWorkshopClaimDocument(claimId: number, kind: ValidationDocumentType, file: File) {
+  const intent = await apiRequest<DocumentUploadIntentRead>(`/workshop-claims/${claimId}/documents/upload-intents`, {
+    method: "POST", body: JSON.stringify({ document_type: "other", validation_document_type: kind,
+      file_name: file.name, content_type: file.type, file_size_bytes: file.size }),
+  });
+  const uploaded = await fetch(intent.upload_url, { method: "PUT", headers: intent.required_headers, body: file });
+  if (!uploaded.ok) throw new ApiError("Não foi possível enviar o arquivo. Tente novamente.", uploaded.status, null);
+  return apiRequest<DocumentRead>(`/documents/${intent.document.id}/confirm-upload`, { method: "POST", body: JSON.stringify({ file_size_bytes: file.size }) });
+}

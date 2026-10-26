@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
-import { PlannedState } from "../../../components/data-display/PlannedState";
 import { StateBlock } from "../../../components/data-display/StateBlock";
 import { getWorkshop, type WorkshopRead } from "../../../lib/api/workshops";
 
@@ -39,10 +38,7 @@ export function WorkshopProfilePage() {
           <p>{workshop.phone || workshop.email || "Contato não informado"}</p>
         </div>
       </Panel>
-      <PlannedState
-        title="Reivindicação planejada"
-        description="O fluxo de reivindicar perfil será habilitado quando houver endpoint de ownership."
-      />
+      <Link to={`/app/oficinas/reivindicar?cnpj=${encodeURIComponent(workshop.cnpj)}`}>Sou responsável por esta oficina</Link>
     </section>
   );
 }
