@@ -1,3 +1,10 @@
+import { ServiceAssociationsPage } from "../features/admin/pages/ServiceAssociationsPage";
+import { MaintenanceDetailPage } from "../features/maintenance/pages/MaintenanceDetailPage";
+import { ServiceInvitationPage } from "../features/maintenance/pages/ServiceInvitationPage";
+import { PendingServicesPage } from "../features/maintenance/pages/PendingServicesPage";
+import { WorkshopServicesPage } from "../features/workshops/pages/WorkshopServicesPage";
+import { MaintenanceReviewPage } from "../features/admin/pages/MaintenanceReviewPage";
+import { ServiceDisputesPage } from "../features/admin/pages/ServiceDisputesPage";
 import { WorkshopClaimPage } from "../features/workshops/pages/WorkshopClaimPage";
 import { WorkshopClaimsPage } from "../features/admin/pages/WorkshopClaimsPage";
 import { Navigate, Outlet, type RouteObject } from "react-router-dom";
@@ -26,6 +33,7 @@ import { ManagedWorkshopsPage } from "../features/workshops/pages/ManagedWorksho
 import { NewWorkshopPage } from "../features/workshops/pages/NewWorkshopPage";
 
 const routeDefinitions: RouteObject[] = [
+  { path: "/convite-servico", element: <ServiceInvitationPage /> },
   { path: "/app/participacao", element: <AuthGuard requireApproved={false}><PilotStatusPage /></AuthGuard> },
   { path: "*", element: <section><h1>Página não encontrada</h1></section> },
   {
@@ -48,6 +56,9 @@ const routeDefinitions: RouteObject[] = [
     ),
     children: [
       { index: true, element: <Navigate replace to="garagem" /> },
+      { path: "servicos-pendentes", element: <PendingServicesPage /> },
+      { path: "manutencoes/:recordId", element: <MaintenanceDetailPage /> },
+      { path: "oficinas/:workshopId/servicos", element: <WorkshopServicesPage /> },
       { path: "garagem", element: <GarageDashboardPage /> },
       { path: "garagem/novo", element: <AddGarageVehiclePage /> },
       { path: "garagem/:vehicleId", element: <GarageVehicleDetailPage /> },
@@ -67,6 +78,10 @@ const routeDefinitions: RouteObject[] = [
     ),
     children: [
       { index: true, element: <Navigate replace to="participantes" /> },
+      { path: "servicos", element: <MaintenanceReviewPage /> },
+      { path: "servicos/:recordId", element: <MaintenanceReviewPage /> },
+      { path: "associacoes", element: <ServiceAssociationsPage /> },
+      { path: "contestacoes", element: <ServiceDisputesPage /> },
       { path: "participantes", element: <ParticipantQueuePage /> },
       { path: "oficinas", element: <WorkshopClaimsPage /> },
       { path: "validacoes", element: <AdminValidationQueuePage /> },

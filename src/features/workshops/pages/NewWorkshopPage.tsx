@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import { createWorkshop, type WorkshopPayload } from "../../../lib/api/workshops";
 import { WorkshopForm } from "../components/WorkshopForm";
 
 export function NewWorkshopPage() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const reference = params.get("referencia") === "1";
   const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,8 +27,8 @@ export function NewWorkshopPage() {
 
   return (
     <section className="page-section">
-      <p>Após o cadastro, envie os documentos de representação. A gestão será liberada depois da aprovação.</p>
-      <WorkshopForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
+      <p>{reference ? "Cadastre o estabelecimento como referência para o atendimento. Isso não concede gestão da oficina." : "Após o cadastro, envie os documentos de representação. A gestão será liberada depois da aprovação."}</p>
+      <WorkshopForm source={reference ? "user_submitted" : "owner_claimed"} isSubmitting={isSubmitting} onSubmit={handleSubmit} />
       {error ? <p className="form-error">{error}</p> : null}
     </section>
   );

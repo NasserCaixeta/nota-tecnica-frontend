@@ -1,0 +1,15 @@
+export const serviceRecord = {
+  id: 42, vehicle_id: 11, author_user_id: 1, workshop_id: 7,
+  origin: "workshop", service_date: "2026-06-15", odometer: 50000,
+  category: "mechanical", vehicle_system: "engine", description: "Troca de óleo",
+  labor_cost: "120.00", parts_cost: "180.00", total_cost: "300.00",
+  warranty_months: 6, entry_date: null, promised_delivery_date: null,
+  actual_delivery_date: null, status: "completed", created_at: "2026-06-15T12:00:00Z",
+  updated_at: "2026-06-15T12:00:00Z", current_revision_id: 8,
+  editorial_status: "submitted", admin_status: "pending",
+  customer_acknowledgement: "awaiting_customer", customer_user_id: 2,
+  review_version: 3, public_description: null, review_reason: null,
+  published: false, dispute_open: false, superseded_by_id: null,
+  permissions: { can_edit: false, can_submit: false, can_acknowledge: true,
+    can_dispute: true, can_invite: false },
+};

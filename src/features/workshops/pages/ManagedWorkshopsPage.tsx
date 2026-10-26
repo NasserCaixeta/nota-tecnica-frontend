@@ -17,7 +17,7 @@ export function ManagedWorkshopsPage() {
     <p><Link to="/app/oficinas/nova">Cadastrar minha oficina</Link></p><p><Link to="/app/oficinas/reivindicar">Reivindicar uma oficina existente</Link></p>
     {error && <p role="alert">{error} <button onClick={() => void load()}>Tentar novamente</button></p>}
     {loading ? <p role="status">Carregando oficinas...</p> : <>
-      <h2>Representações aprovadas</h2>{offices.length === 0 ? <p>Nenhuma representação aprovada.</p> : offices.map(office => <article className="panel" key={office.id}><h3>{office.trade_name}</h3><p>{office.city}/{office.state}</p><Link to={`/oficinas/${office.id}`}>Ver perfil público</Link></article>)}
+      <h2>Representações aprovadas</h2>{offices.length === 0 ? <p>Nenhuma representação aprovada.</p> : offices.map(office => <article className="panel" key={office.id}><h3>{office.trade_name}</h3><p>{office.city}/{office.state}</p><Link to={`/app/oficinas/${office.id}/servicos`}>Gerenciar atendimentos</Link> <Link to={`/oficinas/${office.id}`}>Ver perfil público</Link></article>)}
       <h2>Solicitações</h2>{claims.map(claim => <article key={claim.id}><strong>{claim.trade_name}</strong><p>{claim.status === "verified" ? "Aprovada" : claim.status === "rejected" ? "Recusada" : "Pendente"}</p>{claim.reason && <p>{claim.reason}</p>}<Link to="/app/oficinas/reivindicar">Acompanhar documentação</Link></article>)}
     </>}
   </section>;

@@ -15,8 +15,8 @@ export function NewMaintenancePage() {
     setError(null);
 
     try {
-      await createVehicleMaintenance(vehicleId, payload);
-      navigate(`/app/garagem/${vehicleId}`);
+      const record = await createVehicleMaintenance(vehicleId, payload);
+      navigate(`/app/manutencoes/${record.id}`);
     } catch {
       setError("Não foi possível registrar a manutenção.");
     } finally {

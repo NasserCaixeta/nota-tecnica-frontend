@@ -7,6 +7,7 @@ import type { WorkshopPayload } from "../../../lib/api/workshops";
 
 type WorkshopFormProps = {
   isSubmitting: boolean;
+  source?: WorkshopPayload["source"];
   onSubmit: (payload: WorkshopPayload) => void | Promise<void>;
 };
 
@@ -23,8 +24,8 @@ const initialPayload: WorkshopPayload = {
   specialties: [],
 };
 
-export function WorkshopForm({ isSubmitting, onSubmit }: WorkshopFormProps) {
-  const [payload, setPayload] = useState(initialPayload);
+export function WorkshopForm({ isSubmitting, onSubmit, source = "owner_claimed" }: WorkshopFormProps) {
+  const [payload, setPayload] = useState({ ...initialPayload, source });
   const [specialties, setSpecialties] = useState("");
 
   function updateField(field: keyof WorkshopPayload, value: string) {

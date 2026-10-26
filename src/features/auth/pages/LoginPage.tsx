@@ -19,7 +19,9 @@ export function LoginPage() {
       const response = await login(values);
       setStoredToken(response.access_token);
       const user = await getCurrentUser();
-      navigate(user.participation_status === "approved" ? "/app/garagem" : "/app/participacao");
+      let invitationPending = false;
+      try { invitationPending = Boolean(window.sessionStorage.getItem("nota-tecnica.invitation.pending")); } catch { /* Login remains available without browser storage. */ }
+      navigate(invitationPending ? "/convite-servico" : user.participation_status === "approved" ? "/app/garagem" : "/app/participacao");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Não foi possível entrar.");
     } finally {

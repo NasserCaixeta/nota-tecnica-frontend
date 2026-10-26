@@ -55,3 +55,10 @@ export function getGarageValidation(vehicleLinkId: number) {
 export function reviewDocument(documentId: number, payload: { review_status: "approved" | "rejected"; expected_version: number; rejection_reason?: string }) {
   return apiRequest<DocumentRead>(`/admin/documents/${documentId}/review`, { method: "PATCH", body: JSON.stringify(payload) });
 }
+
+export type MaintenanceReviewDetail = import("./maintenance").MaintenanceRecord & { documents: DocumentRead[] };
+export const listMaintenanceReviews = () => apiRequest<import("./maintenance").MaintenanceRecord[]>("/admin/maintenance-reviews");
+export const getMaintenanceReview = (id: string | number) => apiRequest<MaintenanceReviewDetail>(`/admin/maintenance-reviews/${id}`);
+export const reviewMaintenance = (record: import("./maintenance").MaintenanceRecord, decision: "approved" | "rejected" | "changes_requested", reason: string, public_description?: string) => apiRequest<import("./maintenance").MaintenanceRecord>(`/admin/maintenance-reviews/${record.id}`, { method: "PATCH", body: JSON.stringify({ revision_id: record.current_revision_id, expected_version: record.review_version, decision, reason, ...(decision === "approved" ? { public_description } : {}) }) });
+export const listAdminServiceDisputes = () => apiRequest<import("./maintenance").DisputeRead[]>("/admin/service-disputes");
+export const reviewServiceDispute = (dispute: import("./maintenance").DisputeRead, resolution: "request_changes" | "reject" | "resolved", reason: string) => apiRequest<import("./maintenance").DisputeRead>(`/admin/service-disputes/${dispute.id}`, { method: "PATCH", body: JSON.stringify({ expected_version: dispute.review_version, resolution, reason }) });

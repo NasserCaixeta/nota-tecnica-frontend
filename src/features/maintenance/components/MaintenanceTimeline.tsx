@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+import { serviceStatus } from "../../../lib/api/maintenance";
 import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { formatDate } from "../../../lib/format/date";
@@ -26,12 +28,12 @@ export function MaintenanceTimeline({ records }: MaintenanceTimelineProps) {
           return (
             <article className="data-row" key={record.id}>
               <div>
-                <strong>{record.title}</strong>
-                <p className="muted">{record.description || "Sem descrição adicional"}</p>
+                <Link to={`/app/manutencoes/${record.id}`}>{record.description}</Link>
+                <p>{serviceStatus(record)}</p>
               </div>
               <div className="data-row__meta">
-                <StatusPill>{formatDate(record.performed_at)}</StatusPill>
-                {record.odometer ? <span className="muted">{record.odometer.toLocaleString("pt-BR")} km</span> : null}
+                <StatusPill>{formatDate(record.service_date)}</StatusPill>
+                {record.odometer !== null ? <span className="muted">{record.odometer.toLocaleString("pt-BR")} km</span> : null}
                 {totalCost > 0 ? <strong>{formatMoney(totalCost)}</strong> : null}
               </div>
             </article>
