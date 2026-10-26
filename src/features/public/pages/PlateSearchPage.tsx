@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import { getVehicleHistoryPreview, type VehicleHistoryPreview } from "../../../lib/api/public";
 import { HistoryPreviewPanel } from "../components/HistoryPreviewPanel";
@@ -24,19 +24,23 @@ const previewFeatures = [
 ];
 
 export function PlateSearchPage() {
+  const activeSearch = useRef(0);
   const [preview, setPreview] = useState<VehicleHistoryPreview | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function handleSearch(plate: string) {
+    const search = ++activeSearch.current;
+    setPreview(null);
     setLoading(true);
     setError(null);
     try {
-      setPreview(await getVehicleHistoryPreview(plate));
+      const result = await getVehicleHistoryPreview(plate);
+      if (search === activeSearch.current) setPreview(result);
     } catch (caught) {
-      setError(caught instanceof Error ? caught.message : "Não foi possível consultar a placa.");
+      if (search === activeSearch.current) setError(caught instanceof Error ? caught.message : "Não foi possível consultar a placa.");
     } finally {
-      setLoading(false);
+      if (search === activeSearch.current) setLoading(false);
     }
   }
 

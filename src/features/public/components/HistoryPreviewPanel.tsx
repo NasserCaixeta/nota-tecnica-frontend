@@ -33,7 +33,7 @@ export function HistoryPreviewPanel({ preview }: { preview: VehicleHistoryPrevie
           </div>
           <span className="history-preview__plate">{preview.plate}</span>
         </div>
-        <p>Você pode cadastrar este veículo na garagem e começar a organizar os registros técnicos.</p>
+        <p>Não há registros publicados disponíveis para esta placa. Isso não informa se existem cadastros ou análises privadas.</p>
       </article>
     );
   }
@@ -62,6 +62,7 @@ export function HistoryPreviewPanel({ preview }: { preview: VehicleHistoryPrevie
         </div>
       </div>
 
+      <p>Esta é uma prévia, sem detalhes dos serviços ou documentos pessoais. O histórico completo de terceiros exige acesso por 30 dias; no piloto, o pagamento será somente de testes.</p>
       <dl className="history-preview__detail-grid">
         <div className="history-preview__detail">
           <dt>Primeiro registro</dt>
