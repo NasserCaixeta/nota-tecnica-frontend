@@ -4,10 +4,10 @@ import { Panel } from "../../../components/ui/Panel";
 import { StatusPill } from "../../../components/ui/StatusPill";
 import { formatDate } from "../../../lib/format/date";
 import { formatMoney } from "../../../lib/format/money";
-import type { MaintenanceRecord } from "../../../lib/api/maintenance";
+import type { VehicleHistoryRecord } from "../../../lib/api/maintenance";
 
 type MaintenanceTimelineProps = {
-  records: MaintenanceRecord[];
+  records: VehicleHistoryRecord[];
 };
 
 export function MaintenanceTimeline({ records }: MaintenanceTimelineProps) {
@@ -28,8 +28,8 @@ export function MaintenanceTimeline({ records }: MaintenanceTimelineProps) {
           return (
             <article className="data-row" key={record.id}>
               <div>
-                <Link to={`/app/manutencoes/${record.id}`}>{record.description}</Link>
-                <p>{serviceStatus(record)}</p>
+                <Link to={`/app/manutencoes/${record.id}`}>{record.visibility === "published" ? record.public_description : record.description}</Link>
+                <p>{record.visibility === "published" ? "Histórico publicado" : serviceStatus(record)}</p>
               </div>
               <div className="data-row__meta">
                 <StatusPill>{formatDate(record.service_date)}</StatusPill>

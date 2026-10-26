@@ -15,3 +15,15 @@ it("confirms the displayed revision and asks to refresh on a conflict", async ()
   expect(await screen.findByRole("alert")).toHaveTextContent(/atualiz/i);
   expect(sent).toEqual({ revision_id: 8 });
 });
+it("renders a published-only history view without private fields or actions", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockResolvedValue(new Response(JSON.stringify({ visibility: "published", id: 42, service_date: "2026-06-15", odometer: 50000, category: "mechanical", vehicle_system: "engine", public_description: "Descrição conferida sem dados pessoais", workshop: null, labor_cost: "120.00", parts_cost: "180.00", total_cost: "300.00" }))));
+  render(<MemoryRouter initialEntries={["/app/manutencoes/42"]}><Routes><Route path="/app/manutencoes/:recordId" element={<MaintenanceDetailPage />} /></Routes></MemoryRouter>);
+  expect(await screen.findByText("Descrição conferida sem dados pessoais")).toBeInTheDocument();
+  expect(screen.queryByRole("button", { name: "Confirmar serviço" })).not.toBeInTheDocument();
+  expect(screen.queryByText("Comprovantes privados")).not.toBeInTheDocument();
+});
+it("uses server submission permission when another representative owns the receipt", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(url.endsWith("/maintenance-records/42") ? { ...serviceRecord, permissions: { ...serviceRecord.permissions, can_edit: true, can_submit: true } } : []))));
+  render(<MemoryRouter initialEntries={["/app/manutencoes/42"]}><Routes><Route path="/app/manutencoes/:recordId" element={<MaintenanceDetailPage />} /></Routes></MemoryRouter>);
+  expect(await screen.findByRole("button", { name: "Enviar para análise" })).toBeEnabled();
+});

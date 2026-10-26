@@ -8,6 +8,7 @@ export type MaintenanceCreatePayload = {
   warranty_months?: number | null; status?: "draft" | "completed" | "cancelled";
 };
 export type MaintenanceRecord = MaintenanceCreatePayload & {
+  visibility: "private";
   id: number; vehicle_id: number; author_user_id: number; workshop_id: number | null;
   origin: "customer" | "workshop"; total_cost: string; created_at: string; updated_at: string;
   current_revision_id: number; editorial_status: "draft" | "submitted" | "cancelled";
@@ -17,6 +18,13 @@ export type MaintenanceRecord = MaintenanceCreatePayload & {
   public_description: string | null; published: boolean; dispute_open: boolean; superseded_by_id: number | null;
   permissions: { can_edit: boolean; can_submit: boolean; can_acknowledge: boolean; can_dispute: boolean; can_invite: boolean };
 };
+export type PublishedService = {
+  visibility: "published"; id: number; service_date: string; odometer: number;
+  category: string; vehicle_system: string; public_description: string;
+  workshop: { id: number; trade_name: string; verified: boolean } | null;
+  labor_cost: string; parts_cost: string; total_cost: string;
+};
+export type VehicleHistoryRecord = MaintenanceRecord | PublishedService;
 export type RevisionRead = { id: number; revision_number: number; snapshot: MaintenanceCreatePayload; admin_status: string; customer_acknowledgement: string };
 export type DisputeRead = { id: number; record_id: number; revision_id: number; customer_user_id: number;
   reason: string; status: "open" | "closed"; resolution: string | null; resolution_reason: string | null;
@@ -24,9 +32,9 @@ export type DisputeRead = { id: number; record_id: number; revision_id: number; 
 export type InvitationResult = { state: "participation_pending" | "relationship_required" | "awaiting_confirmation"; record_id?: number; revision_id?: number };
 export type PendingInvitation = { id: number; created_at: string; expires_at: string };
 const post = <T>(path: string, payload: unknown) => apiRequest<T>(path, { method: "POST", body: JSON.stringify(payload) });
-export const listVehicleMaintenance = (vehicleId: string | number) => apiRequest<MaintenanceRecord[]>(`/vehicles/${vehicleId}/maintenance-records`);
+export const listVehicleMaintenance = (vehicleId: string | number) => apiRequest<VehicleHistoryRecord[]>(`/vehicles/${vehicleId}/maintenance-records`);
 export const createVehicleMaintenance = (vehicleId: string | number, payload: MaintenanceCreatePayload) => post<MaintenanceRecord>(`/vehicles/${vehicleId}/maintenance-records`, payload);
-export const getMaintenance = (id: string | number) => apiRequest<MaintenanceRecord>(`/maintenance-records/${id}`);
+export const getMaintenance = (id: string | number) => apiRequest<VehicleHistoryRecord>(`/maintenance-records/${id}`);
 export const updateMaintenance = (record: MaintenanceRecord, payload: MaintenanceCreatePayload) => apiRequest<MaintenanceRecord>(`/maintenance-records/${record.id}`, { method: "PATCH", body: JSON.stringify({ ...payload, expected_revision_id: record.current_revision_id }) });
 export const submitMaintenance = (record: MaintenanceRecord) => post<MaintenanceRecord>(`/maintenance-records/${record.id}/submit`, { revision_id: record.current_revision_id });
 export const acknowledgeMaintenance = (record: MaintenanceRecord) => post<MaintenanceRecord>(`/maintenance-records/${record.id}/acknowledge`, { revision_id: record.current_revision_id });

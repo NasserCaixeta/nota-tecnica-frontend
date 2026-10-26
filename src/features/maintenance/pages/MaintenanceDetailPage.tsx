@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { associateServices, listDuplicateCandidates, acknowledgeMaintenance, getMaintenance, issueServiceInvitation, listServiceDocuments, listServiceDisputes, listServiceRevisions, openServiceDispute, replyServiceDispute, serviceError, serviceStatus, submitMaintenance, updateMaintenance, type MaintenanceRecord, type DisputeRead, type RevisionRead } from "../../../lib/api/maintenance";
+import { associateServices, listDuplicateCandidates, acknowledgeMaintenance, getMaintenance, issueServiceInvitation, listServiceDocuments, listServiceDisputes, listServiceRevisions, openServiceDispute, replyServiceDispute, serviceError, serviceStatus, submitMaintenance, updateMaintenance, type MaintenanceRecord, type PublishedService, type DisputeRead, type RevisionRead } from "../../../lib/api/maintenance";
 import { uploadServiceEvidence, uploadDisputeEvidence, type DocumentRead } from "../../../lib/api/documents";
 import { MaintenanceForm } from "../components/MaintenanceForm";
 import { PrivateEvidence } from "../components/PrivateEvidence";
@@ -9,6 +9,7 @@ import { formatMoney } from "../../../lib/format/money";
 export function MaintenanceDetailPage() {
   const { recordId = "" } = useParams();
   const isAdmin = useContext(SessionContext)?.user?.is_admin ?? false;
+  const [publishedView, setPublishedView] = useState<PublishedService | null>(null);
   const [record, setRecord] = useState<MaintenanceRecord | null>(null); const [documents, setDocuments] = useState<DocumentRead[]>([]);
   const [disputes, setDisputes] = useState<DisputeRead[]>([]); const [revisions, setRevisions] = useState<RevisionRead[]>([]);
   const [error, setError] = useState<string | null>(null); const [busy, setBusy] = useState(false);
@@ -20,7 +21,9 @@ export function MaintenanceDetailPage() {
   const load = useCallback(async () => {
     setError(null);
     try {
-      const current = await getMaintenance(recordId); setRecord(current);
+      const current = await getMaintenance(recordId);
+      if (current.visibility === "published") { setPublishedView(current); setRecord(null); return; }
+      setPublishedView(null); setRecord(current);
       setDocuments(await listServiceDocuments(current.id));
       if (isAdmin || current.permissions.can_edit || current.permissions.can_acknowledge || current.permissions.can_dispute || current.dispute_open) {
         setCandidates(await listDuplicateCandidates(current.id));
@@ -35,7 +38,8 @@ export function MaintenanceDetailPage() {
   }
   return <section className="page-section"><h1>Detalhe do serviço</h1>
     {error && <p role="alert">{error} <button onClick={() => void load()}>Atualizar dados</button></p>}
-    {!record ? !error && <p role="status">Carregando...</p> : <>
+    {publishedView && <article><h2>{publishedView.public_description}</h2><p>Histórico publicado</p><p>{publishedView.service_date} · {publishedView.odometer.toLocaleString("pt-BR")} km</p><p>Categoria: {publishedView.category} · Sistema: {publishedView.vehicle_system}</p><p>Oficina: {publishedView.workshop?.trade_name ?? "Não informada"}</p><p>Mão de obra: {formatMoney(Number(publishedView.labor_cost))} · Peças: {formatMoney(Number(publishedView.parts_cost))} · Total: {formatMoney(Number(publishedView.total_cost))}</p></article>}
+    {!record ? !error && !publishedView && <p role="status">Carregando...</p> : <>
       <h2>{record.description}</h2><p>{serviceStatus(record)}</p>
       <p>{record.service_date} · {record.odometer.toLocaleString("pt-BR")} km · {formatMoney(Number(record.total_cost))}</p>
       <p>{record.origin === "workshop" ? "Registrado pela oficina" : "Registrado pelo cliente"}</p>
@@ -50,7 +54,7 @@ export function MaintenanceDetailPage() {
         <button disabled={busy} onClick={() => setEditing(!editing)}>Corrigir serviço</button>
         {editing && <MaintenanceForm key={record.current_revision_id} initial={record} workshop={record.origin === "workshop"} isSubmitting={busy} onSubmit={async payload => { await act(() => updateMaintenance(record, payload)); setEditing(false); }} />}
       </>}
-      {record.permissions.can_submit && <button disabled={busy || !documents.some(d => d.storage_verified)} onClick={() => void act(() => submitMaintenance(record))}>Enviar para análise</button>}
+      {record.permissions.can_submit && <button disabled={busy} onClick={() => void act(() => submitMaintenance(record))}>Enviar para análise</button>}
       {record.permissions.can_acknowledge && <button disabled={busy} onClick={() => void act(() => acknowledgeMaintenance(record))}>Confirmar serviço</button>}
       {record.permissions.can_dispute && <><label>Motivo da contestação<textarea value={reason} onChange={e => setReason(e.target.value)} /></label><button disabled={busy || !reason.trim()} onClick={() => void act(() => openServiceDispute(record, reason))}>Contestar serviço</button></>}
       {record.permissions.can_invite && <section><h3>Convidar cliente</h3><label>E-mail do cliente<input type="email" value={email} onChange={e => setEmail(e.target.value)} /></label><button disabled={busy || !email.trim()} onClick={() => void act(async () => { const result = await issueServiceInvitation(record, email); setInvite(result.url); })}>Gerar convite</button>{invite && <><p>Link privado, válido por sete dias. O cliente precisa validar o vínculo e confirmar o serviço.</p><input aria-label="Link privado do convite" readOnly value={invite} /></>}</section>}

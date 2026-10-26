@@ -4,12 +4,12 @@ import { getGarageVehicle } from "../../../lib/api/garage";
 import type { GarageVehicleItem } from "../../../lib/api/types";
 import { DocumentChecklist } from "../components/DocumentChecklist";
 import { garageStatusLabels } from "../../../content/status-labels";
-import { listVehicleMaintenance, type MaintenanceRecord } from "../../../lib/api/maintenance";
+import { listVehicleMaintenance, type VehicleHistoryRecord } from "../../../lib/api/maintenance";
 import { MaintenanceTimeline } from "../../maintenance/components/MaintenanceTimeline";
 export function GarageVehicleDetailPage() {
   const { vehicleId } = useParams();
   const [vehicle, setVehicle] = useState<GarageVehicleItem | null>(null);
-  const [records, setRecords] = useState<MaintenanceRecord[]>([]);
+  const [records, setRecords] = useState<VehicleHistoryRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
   const load = useCallback(async () => {
     setError(null);
