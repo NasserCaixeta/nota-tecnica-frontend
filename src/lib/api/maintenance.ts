@@ -16,7 +16,7 @@ export type MaintenanceRecord = MaintenanceCreatePayload & {
   customer_acknowledgement: "author_acknowledged" | "awaiting_customer" | "confirmed" | "disputed";
   customer_user_id: number | null; review_version: number; review_reason: string | null;
   public_description: string | null; published: boolean; dispute_open: boolean; superseded_by_id: number | null;
-  permissions: { can_edit: boolean; can_submit: boolean; can_acknowledge: boolean; can_dispute: boolean; can_invite: boolean };
+  permissions: { can_edit: boolean; can_submit: boolean; can_acknowledge: boolean; can_dispute: boolean; can_invite: boolean; can_review?: boolean };
 };
 export type PublishedService = {
   visibility: "published"; id: number; service_date: string; odometer: number;

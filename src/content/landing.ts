@@ -18,36 +18,6 @@ export const landingSteps = [
   {
     number: "03",
     title: "Escolha com dados",
-    text: "Compare oficinas por prazo, preço e retrabalho. Sem depender só de indicação.",
-  },
-];
-
-export const featuredWorkshops = [
-  {
-    name: "Auto Performance SP",
-    city: "São Paulo, SP",
-    services: "318",
-    tags: ["Motor", "Freios", "Suspensão"],
-    onTimeRate: "94%",
-    reworkRate: "1.2%",
-    score: "9.4",
-  },
-  {
-    name: "Mecânica Bonfim",
-    city: "Belo Horizonte, MG",
-    services: "204",
-    tags: ["Injeção", "Elétrica"],
-    onTimeRate: "91%",
-    reworkRate: "2.0%",
-    score: "9.1",
-  },
-  {
-    name: "Rede Confiança",
-    city: "Curitiba, PR",
-    services: "477",
-    tags: ["Revisão", "Alinhamento"],
-    onTimeRate: "88%",
-    reworkRate: "2.7%",
-    score: "8.8",
+    text: "Compare oficinas por avaliação, prazo e serviços comprovados. A nota informa sua amostra.",
   },
 ];

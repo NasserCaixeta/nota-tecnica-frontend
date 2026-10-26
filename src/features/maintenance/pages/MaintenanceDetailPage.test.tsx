@@ -27,3 +27,17 @@ it("uses server submission permission when another representative owns the recei
   render(<MemoryRouter initialEntries={["/app/manutencoes/42"]}><Routes><Route path="/app/manutencoes/:recordId" element={<MaintenanceDetailPage />} /></Routes></MemoryRouter>);
   expect(await screen.findByRole("button", { name: "Enviar para análise" })).toBeEnabled();
 });
+it("saves a customer's optional rating for the displayed published revision", async () => {
+  let sent: unknown;
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string, options?: RequestInit) => {
+    if (options?.method === "PUT") { sent = JSON.parse(String(options.body)); return new Response(JSON.stringify({ id: 1, record_id: 42, revision_id: 8, stars: 4, comment: "Bom atendimento", comment_hidden: false, review_version: 1 })); }
+    if (url.endsWith("/review")) return new Response("null");
+    return new Response(JSON.stringify(url.endsWith("/maintenance-records/42") ? { ...serviceRecord, published: true, permissions: { ...serviceRecord.permissions, can_review: true } } : []));
+  }));
+  render(<MemoryRouter initialEntries={["/app/manutencoes/42"]}><Routes><Route path="/app/manutencoes/:recordId" element={<MaintenanceDetailPage />} /></Routes></MemoryRouter>);
+  fireEvent.change(await screen.findByLabelText("Nota de 1 a 5 estrelas"), { target: { value: "4" } });
+  fireEvent.change(screen.getByLabelText("Comentário (opcional)"), { target: { value: "Bom atendimento" } });
+  fireEvent.click(screen.getByRole("button", { name: "Salvar avaliação" }));
+  expect(await screen.findByText("Avaliação salva.")).toBeInTheDocument();
+  expect(sent).toEqual({ revision_id: 8, stars: 4, comment: "Bom atendimento" });
+});

@@ -12,6 +12,7 @@ export function AdminShell() {
         <nav className="shell__side-nav" aria-label="Navegação admin">
           <Link to="/admin/participantes">Participantes</Link>
           <Link to="/admin/servicos">Serviços</Link>
+          <Link to="/admin/avaliacoes">Comentários de avaliações</Link>
           <Link to="/admin/associacoes">Associações</Link>
           <Link to="/admin/contestacoes">Contestações</Link>
           <Link to="/admin/oficinas">Oficinas</Link>

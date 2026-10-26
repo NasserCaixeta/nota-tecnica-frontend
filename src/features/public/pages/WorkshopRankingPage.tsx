@@ -1,22 +1,12 @@
-import { useEffect, useState } from "react";
-
-import { getWorkshopRanking, type WorkshopRankingItem } from "../../../lib/api/ranking";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { getWorkshopRanking, type WorkshopRankingResponse } from "../../../lib/api/ranking";
 import { WorkshopRankingList } from "../../workshops/components/WorkshopRankingList";
-
 export function WorkshopRankingPage() {
-  const [items, setItems] = useState<WorkshopRankingItem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getWorkshopRanking()
-      .then((response) => setItems(response.items))
-      .finally(() => setLoading(false));
-  }, []);
-
-  return (
-    <main>
-      <h1>Ranking de oficinas</h1>
-      {loading ? <p>Carregando ranking...</p> : <WorkshopRankingList items={items} />}
-    </main>
-  );
+  const [data, setData] = useState<WorkshopRankingResponse | null>(null); const [city, setCity] = useState(""); const [state, setState] = useState(""); const [category, setCategory] = useState(""); const [query, setQuery] = useState(""); const [loading, setLoading] = useState(true); const [error, setError] = useState<string | null>(null); const request = useRef(0);
+  const load = useCallback(async () => { const id = ++request.current; setLoading(true); setData(null); setError(null); try { const response = await getWorkshopRanking(new URLSearchParams(query)); if (id === request.current) setData(response); } catch { if (id === request.current) setError("Não foi possível carregar o ranking. Tente novamente."); } finally { if (id === request.current) setLoading(false); } }, [query]);
+  useEffect(() => { void load(); }, [load]);
+  function filter(e: FormEvent) { e.preventDefault(); const p = new URLSearchParams(); if (city.trim()) p.set("city", city.trim()); if (state.trim()) p.set("state", state.trim().toUpperCase()); if (category) p.set("category", category); if (p.toString() === query) void load(); else setQuery(p.toString()); }
+  return <main className="page-section"><h1>Ranking de oficinas</h1><form className="stack" onSubmit={filter}><label>Cidade<input value={city} onChange={e => setCity(e.target.value)} /></label><label>UF<input maxLength={2} value={state} onChange={e => setState(e.target.value)} /></label><label>Categoria<select value={category} onChange={e => setCategory(e.target.value)}><option value="">Todas</option>{Object.entries({ mechanical: "Mecânica", electrical: "Elétrica", bodywork: "Funilaria", paint: "Pintura", detailing: "Estética", tires: "Pneus", inspection: "Revisão", diagnosis: "Diagnóstico", other: "Outro" }).map(([v,l]) => <option key={v} value={v}>{l}</option>)}</select></label><button type="submit">Aplicar filtros</button></form>
+    {error && <p role="alert">{error} <button onClick={() => void load()}>Tentar novamente</button></p>}{loading ? <p role="status">Carregando ranking...</p> : data && <><p>{data.score_explanation}</p><p>Fórmula: {data.score_version}. As amostras correspondem aos filtros aplicados.</p><h2>Oficinas com amostra suficiente</h2><WorkshopRankingList items={data.items} />{!!data.unranked_items.length && <><h2>Oficinas fora da classificação principal</h2><WorkshopRankingList items={data.unranked_items} /></>}</>}
+  </main>;
 }

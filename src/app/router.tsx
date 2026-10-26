@@ -1,3 +1,4 @@
+import { ServiceReviewsPage } from "../features/admin/pages/ServiceReviewsPage";
 import { ServiceAssociationsPage } from "../features/admin/pages/ServiceAssociationsPage";
 import { MaintenanceDetailPage } from "../features/maintenance/pages/MaintenanceDetailPage";
 import { ServiceInvitationPage } from "../features/maintenance/pages/ServiceInvitationPage";
@@ -80,6 +81,7 @@ const routeDefinitions: RouteObject[] = [
       { index: true, element: <Navigate replace to="participantes" /> },
       { path: "servicos", element: <MaintenanceReviewPage /> },
       { path: "servicos/:recordId", element: <MaintenanceReviewPage /> },
+      { path: "avaliacoes", element: <ServiceReviewsPage /> },
       { path: "associacoes", element: <ServiceAssociationsPage /> },
       { path: "contestacoes", element: <ServiceDisputesPage /> },
       { path: "participantes", element: <ParticipantQueuePage /> },
