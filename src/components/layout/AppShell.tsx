@@ -13,6 +13,7 @@ export function AppShell() {
         </Link>
         <nav className="shell__side-nav" aria-label="Navegação do app">
           <Link to="/app/garagem">Garagem</Link>
+          <Link to="/app/notificacoes">Pendências</Link>
           <Link to="/app/assinatura">Assinatura</Link>
           <Link to="/app/servicos-pendentes">Serviços pendentes</Link>
           <Link to="/app/oficinas">Oficinas</Link>

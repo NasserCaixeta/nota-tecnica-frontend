@@ -1,3 +1,4 @@
+import { NotificationsPage } from "../features/notifications/pages/NotificationsPage";
 import { CheckoutStatusPage } from "../features/payments/pages/CheckoutStatusPage";
 import { SubscriptionPage } from "../features/payments/pages/SubscriptionPage";
 import { PaidVehicleHistoryPage } from "../features/public/pages/PaidVehicleHistoryPage";
@@ -37,6 +38,7 @@ import { ManagedWorkshopsPage } from "../features/workshops/pages/ManagedWorksho
 import { NewWorkshopPage } from "../features/workshops/pages/NewWorkshopPage";
 
 const routeDefinitions: RouteObject[] = [
+  { path: "/app/notificacoes", element: <AuthGuard requireApproved={false}><AppShell /></AuthGuard>, children: [{ index: true, element: <NotificationsPage /> }] },
   { path: "/convite-servico", element: <ServiceInvitationPage /> },
   { path: "/app/participacao", element: <AuthGuard requireApproved={false}><PilotStatusPage /></AuthGuard> },
   { path: "*", element: <section><h1>Página não encontrada</h1></section> },
