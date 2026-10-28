@@ -10,6 +10,7 @@ export function AdminShell() {
           <span>■</span> Admin
         </Link>
         <nav className="shell__side-nav" aria-label="Navegação admin">
+          <Link to="/admin/solicitacoes-conta">Solicitações de conta</Link>
           <Link to="/admin/participantes">Participantes</Link>
           <Link to="/admin/servicos">Serviços</Link>
           <Link to="/admin/avaliacoes">Comentários de avaliações</Link>

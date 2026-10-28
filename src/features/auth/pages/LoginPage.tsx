@@ -59,6 +59,7 @@ export function LoginPage() {
           <p>Use o e-mail cadastrado para acessar sua garagem ou área da oficina.</p>
         </div>
         <LoginForm error={error} isSubmitting={isSubmitting} onSubmit={handleSubmit} />
+        <p><Link to="/esqueci-senha">Esqueci minha senha</Link></p>
         <p className="login-panel__footer">
           Ainda não tem conta? <Link to="/cadastro">Criar cadastro</Link>
         </p>

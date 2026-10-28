@@ -17,7 +17,7 @@ export function AppShell() {
           <Link to="/app/assinatura">Assinatura</Link>
           <Link to="/app/servicos-pendentes">Serviços pendentes</Link>
           <Link to="/app/oficinas">Oficinas</Link>
-          <Link to="/app/participacao">Minha conta</Link>
+          <Link to="/app/conta">Minha conta</Link>
           {user?.is_admin && <Link to="/admin/participantes">Administração</Link>}
           <button type="button" onClick={logout}>Sair</button>
         </nav>

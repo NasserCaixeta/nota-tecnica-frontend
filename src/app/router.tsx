@@ -1,3 +1,7 @@
+import { AccountPage } from "../features/auth/pages/AccountPage";
+import { ForgotPasswordPage } from "../features/auth/pages/ForgotPasswordPage";
+import { ResetPasswordPage } from "../features/auth/pages/ResetPasswordPage";
+import { AccountRequestsPage } from "../features/admin/pages/AccountRequestsPage";
 import { NotificationsPage } from "../features/notifications/pages/NotificationsPage";
 import { CheckoutStatusPage } from "../features/payments/pages/CheckoutStatusPage";
 import { SubscriptionPage } from "../features/payments/pages/SubscriptionPage";
@@ -38,6 +42,7 @@ import { ManagedWorkshopsPage } from "../features/workshops/pages/ManagedWorksho
 import { NewWorkshopPage } from "../features/workshops/pages/NewWorkshopPage";
 
 const routeDefinitions: RouteObject[] = [
+  { path: "/app/conta", element: <AuthGuard requireApproved={false}><AppShell /></AuthGuard>, children: [{ index: true, element: <AccountPage /> }] },
   { path: "/app/notificacoes", element: <AuthGuard requireApproved={false}><AppShell /></AuthGuard>, children: [{ index: true, element: <NotificationsPage /> }] },
   { path: "/convite-servico", element: <ServiceInvitationPage /> },
   { path: "/app/participacao", element: <AuthGuard requireApproved={false}><PilotStatusPage /></AuthGuard> },
@@ -49,6 +54,8 @@ const routeDefinitions: RouteObject[] = [
       { path: "/consultar", element: <PlateSearchPage /> },
       { path: "/oficinas", element: <WorkshopRankingPage /> },
       { path: "/oficinas/:workshopId", element: <WorkshopProfilePage /> },
+      { path: "/esqueci-senha", element: <ForgotPasswordPage /> },
+      { path: "/redefinir-senha", element: <ResetPasswordPage /> },
       { path: "/entrar", element: <LoginPage /> },
       { path: "/cadastro", element: <RegisterPage /> },
     ],
@@ -87,6 +94,7 @@ const routeDefinitions: RouteObject[] = [
     ),
     children: [
       { index: true, element: <Navigate replace to="participantes" /> },
+      { path: "solicitacoes-conta", element: <AccountRequestsPage /> },
       { path: "servicos", element: <MaintenanceReviewPage /> },
       { path: "servicos/:recordId", element: <MaintenanceReviewPage /> },
       { path: "avaliacoes", element: <ServiceReviewsPage /> },
