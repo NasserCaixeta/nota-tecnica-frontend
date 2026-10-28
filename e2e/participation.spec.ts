@@ -1,0 +1,20 @@
+import { test, expect } from "@playwright/test";
+import { api, headers, login } from "./helpers";
+test("A01 A02 — registration stays pending until an administrator approves", async ({ page }) => {
+  await page.goto("/cadastro");
+  const data = { full_name: "Participante Sintético", email: "new@example.com", password: "strong-password", cpf: "12345678909", phone: "11999990000", birth_date: "1990-01-20", zip_code: "01001000", street: "Rua Teste", number: "10", neighborhood: "Centro", city: "São Paulo", state: "SP" };
+  for (const [name, value] of Object.entries(data)) await page.locator(`[name="${name}"]`).fill(value);
+  await page.getByRole("button", { name: "Criar conta", exact: true }).click();
+  await expect(page).toHaveURL(/\/entrar$/);
+  await page.getByLabel("E-mail", { exact: true }).fill(data.email);
+  await page.getByLabel("Senha", { exact: true }).fill(data.password);
+  await page.getByRole("button", { name: "Entrar", exact: true }).click();
+  await expect(page.getByText("Aguardando aprovação", { exact: true })).toBeVisible();
+  const token = await page.evaluate(() => localStorage.getItem("nota_tecnica_token"));
+  expect((await page.request.get(`${api}/garage`, { headers: headers(token!) })).status()).toBe(403);
+  const user = await (await page.request.get(`${api}/users/me`, { headers: headers(token!) })).json();
+  const approved = await page.request.patch(`${api}/admin/participants/${user.id}/review`, { headers: headers(await login(page.request, "admin@example.com")), data: { decision: "approved", expected_version: user.participation_version, reason: "Piloto sintético conferido" } });
+  expect(approved.status()).toBe(200);
+  await page.getByRole("button", { name: "Atualizar situação" }).click();
+  await expect(page.getByText("Participação aprovada", { exact: true })).toBeVisible();
+});

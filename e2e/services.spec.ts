@@ -1,0 +1,30 @@
+import { test, expect } from "@playwright/test";
+import { asUser, fillService, evidenceAndSubmit, approveService } from "./helpers";
+test("A07 A08 A12 — customer service is submitted with evidence and moderated", async ({ page }) => {
+  await asUser(page, "driver@example.com", "/app/garagem/1/manutencoes/nova");
+  await fillService(page, "Manutenção sintética do cliente");
+  const id = page.url().split("/").at(-1)!;
+  await evidenceAndSubmit(page);
+  await approveService(page.request, id, "Manutenção do cliente revisada");
+  await page.reload();
+  await expect(page.getByText("Publicado", { exact: true })).toBeVisible();
+});
+test("A08 A09 A11 — workshop invitation requires customer recognition and allows dispute", async ({ page }) => {
+  await asUser(page, "office@example.com", "/app/oficinas/1/servicos");
+  await fillService(page, "Manutenção sintética da oficina", "ABC1D23");
+  const id = page.url().split("/").at(-1)!;
+  await evidenceAndSubmit(page);
+  await approveService(page.request, id, "Serviço da oficina revisado");
+  await page.getByLabel("E-mail do cliente", { exact: true }).fill("driver@example.com");
+  await page.getByRole("button", { name: "Gerar convite" }).click();
+  const invitation = await page.getByLabel("Link privado do convite").inputValue();
+  await asUser(page, "driver@example.com", "/app/garagem");
+  await page.goto(invitation.replace("http://127.0.0.1:5179", ""));
+  await page.getByRole("button", { name: "Retomar convite" }).click();
+  await page.locator('a[href^="/app/manutencoes/"]').click();
+  await page.getByRole("button", { name: "Confirmar serviço", exact: true }).click();
+  await expect(page.getByText("Publicado", { exact: true })).toBeVisible();
+  await page.getByLabel("Motivo da contestação", { exact: true }).fill("Peça sintética exige correção do atendimento");
+  await page.getByRole("button", { name: "Contestar serviço", exact: true }).click();
+  await expect(page.getByText("Contestado", { exact: true })).toBeVisible();
+});

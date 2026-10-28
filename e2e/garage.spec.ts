@@ -1,0 +1,23 @@
+import { test, expect } from "@playwright/test";
+import { api, asUser, headers, login, pdf } from "./helpers";
+test("A04 A06 A07 — garage proof crosses the actual HTTP upload and review journey", async ({ page }) => {
+  const owner = await asUser(page, "buyer@example.com", "/app/garagem/novo");
+  const data = { plate: "DEF2E34", brand: "VW", model: "Gol", model_year: "2020", color: "Prata", chassis: "browser-synthetic-chassis", renavam: "98765432100", fuel_type: "Gasolina", engine: "1.0", transmission: "Manual" };
+  for (const [name, value] of Object.entries(data)) await page.locator(`[name="${name}"]`).fill(value);
+  await page.getByRole("button", { name: "Adicionar veículo", exact: true }).click();
+  await expect(page).toHaveURL(/\/app\/garagem\/\d+$/);
+  const vehicleId = page.url().split("/").at(-1)!;
+  await page.goto(`/app/garagem/${vehicleId}/documentos`);
+  await page.locator('input[type="file"]').first().setInputFiles(pdf);
+  await expect(page.getByText("Documento enviado. A aprovação será feita pela administração.")).toBeVisible();
+  await page.getByRole("button", { name: "Enviar para análise", exact: true }).click();
+  await expect(page.getByText("Seu veículo está em análise.")).toBeVisible();
+  const vehicle = await (await page.request.get(`${api}/garage/vehicles/${vehicleId}`, { headers: headers(owner) })).json();
+  const admin = headers(await login(page.request, "admin@example.com"));
+  let detail = await (await page.request.get(`${api}/admin/garage/vehicle-links/${vehicle.vehicle_link_id}`, { headers: admin })).json();
+  for (const document of detail.documents) expect((await page.request.patch(`${api}/admin/documents/${document.id}/review`, { headers: admin, data: { expected_version: document.review_version, review_status: "approved" } })).status()).toBe(200);
+  detail = await (await page.request.get(`${api}/admin/garage/vehicle-links/${vehicle.vehicle_link_id}`, { headers: admin })).json();
+  expect((await page.request.patch(`${api}/admin/garage/vehicle-links/${vehicle.vehicle_link_id}/review`, { headers: admin, data: { expected_version: detail.review_version, verification_status: "verified" } })).status()).toBe(200);
+  await page.goto(`/app/garagem/${vehicleId}`);
+  await expect(page.getByText(/Novo lançamento|manutenção|Manutenção/).first()).toBeVisible();
+});
