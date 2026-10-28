@@ -1,3 +1,6 @@
+import { CheckoutStatusPage } from "../features/payments/pages/CheckoutStatusPage";
+import { SubscriptionPage } from "../features/payments/pages/SubscriptionPage";
+import { PaidVehicleHistoryPage } from "../features/public/pages/PaidVehicleHistoryPage";
 import { ServiceReviewsPage } from "../features/admin/pages/ServiceReviewsPage";
 import { ServiceAssociationsPage } from "../features/admin/pages/ServiceAssociationsPage";
 import { MaintenanceDetailPage } from "../features/maintenance/pages/MaintenanceDetailPage";
@@ -57,6 +60,9 @@ const routeDefinitions: RouteObject[] = [
     ),
     children: [
       { index: true, element: <Navigate replace to="garagem" /> },
+      { path: "compras/:orderId", element: <CheckoutStatusPage /> },
+      { path: "assinatura", element: <SubscriptionPage /> },
+      { path: "historico/:plate", element: <PaidVehicleHistoryPage /> },
       { path: "servicos-pendentes", element: <PendingServicesPage /> },
       { path: "manutencoes/:recordId", element: <MaintenanceDetailPage /> },
       { path: "oficinas/:workshopId/servicos", element: <WorkshopServicesPage /> },

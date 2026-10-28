@@ -29,3 +29,7 @@ export function updateGarageRelationship(
 export function submitGarageReview(vehicleLinkId: number, resubmit = false) {
   return apiRequest(`/garage/vehicle-links/${vehicleLinkId}/${resubmit ? "resubmit-review" : "submit-review"}`, { method: "POST" });
 }
+
+export function selectFreeGarageVehicle(vehicleId: number) {
+  return apiRequest<GarageDashboard>("/garage/free-vehicle", { method: "PATCH", body: JSON.stringify({ vehicle_id: vehicleId }) });
+}

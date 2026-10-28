@@ -29,3 +29,12 @@ describe("LoginPage", () => {
     expect(screen.getByRole("textbox", { name: /E-mail/i })).toBeInTheDocument();
   });
 });
+
+it("resumes the protected history after approved login", async () => {
+  vi.stubGlobal("fetch", vi.fn().mockImplementation(async (url: string) => new Response(JSON.stringify(url.endsWith("/auth/login") ? { access_token: "token", token_type: "bearer" } : participant))));
+  render(<MemoryRouter initialEntries={[{ pathname: "/entrar", state: { from: "/app/historico/ABC1D23" } }]}><Routes><Route path="/entrar" element={<LoginPage />} /><Route path="/app/historico/:plate" element={<p>Consulta retomada</p>} /><Route path="/app/garagem" element={<p>Garagem</p>} /></Routes></MemoryRouter>);
+  fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "driver@example.com" } });
+  fireEvent.change(screen.getByLabelText("Senha"), { target: { value: "strong-password" } });
+  fireEvent.click(screen.getByRole("button", { name: "Entrar" }));
+  expect(await screen.findByText("Consulta retomada")).toBeInTheDocument();
+});

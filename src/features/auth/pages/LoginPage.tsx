@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
 import { loginBenefits } from "../../../content/auth";
 import { getCurrentUser, login } from "../../../lib/api/auth";
@@ -9,6 +9,7 @@ import "./LoginPage.css";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +22,9 @@ export function LoginPage() {
       const user = await getCurrentUser();
       let invitationPending = false;
       try { invitationPending = Boolean(window.sessionStorage.getItem("nota-tecnica.invitation.pending")); } catch { /* Login remains available without browser storage. */ }
-      navigate(invitationPending ? "/convite-servico" : user.participation_status === "approved" ? "/app/garagem" : "/app/participacao");
+      const from: unknown = location.state?.from;
+      const destination = typeof from === "string" && from.startsWith("/app/") && !from.includes("\\") ? from : "/app/garagem";
+      navigate(invitationPending ? "/convite-servico" : user.participation_status === "approved" ? destination : "/app/participacao");
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Não foi possível entrar.");
     } finally {

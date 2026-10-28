@@ -68,6 +68,7 @@ export function PlateSearchPage() {
           </p>
         ) : null}
         <HistoryPreviewPanel preview={preview} />
+        {preview && preview.maintenance_count > 0 && <p><a href={`/app/historico/${encodeURIComponent(preview.plate)}`}>Consultar histórico completo</a></p>}
       </section>
 
       <section className="plate-page__features" aria-labelledby="plate-features-title">
