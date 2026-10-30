@@ -22,4 +22,4 @@ PLAYWRIGHT_BROWSERS_PATH=/private/tmp/nota-tecnica-playwright npm run test:e2e
 
 Playwright inicia este frontend e o backend irmão. Exige PostgreSQL/Redis locais e banco descartável `nota_tecnica_browser_test`; `NOTA_TECNICA_BACKEND_DIR`, `E2E_DATABASE_URL` e `E2E_REDIS_URL` permitem configurar o ambiente de testes. A fixture exige banco local `_test` e recria seu schema. Nunca usar um banco com participantes.
 
-Aceite e preparação operacional estão em `../nota-tecnica-backend/docs/superpowers/validation/2026-10-21-piloto-{aceite,operacao}.md`. Os pagamentos locais são simulados; a homologação remota é uma etapa independente. Nenhum deploy é executado por estes comandos de build/teste.
+Aceite e preparação operacional estão em `../nota-tecnica-backend/docs/superpowers/validation/2026-10-21-piloto-{aceite,operacao}.md`. Os pagamentos usam Stripe Checkout em testes; o Asaas não é mais utilizado. O frontend aceita somente checkout.stripe.com/c/pay/cs_test_*. A chave Stripe e o segredo de webhook ficam exclusivamente no backend. A homologação remota é uma etapa independente. Nenhum deploy é executado por estes comandos de build/teste.

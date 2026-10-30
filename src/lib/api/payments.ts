@@ -20,7 +20,7 @@ export function sandboxCheckoutUrl(value: string | null) {
   if (!value) return undefined;
   try {
     const url = new URL(value);
-    if (url.origin === "https://sandbox.asaas.com" && url.pathname === "/checkoutSession/show" && !url.username && !url.password) return url.href;
+    if (url.origin === "https://checkout.stripe.com" && url.pathname.startsWith("/c/pay/cs_test_") && !url.username && !url.password) return url.href;
   } catch { /* An invalid URL cannot be used for payment navigation. */ }
   return undefined;
 }
