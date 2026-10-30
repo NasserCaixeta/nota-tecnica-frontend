@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { afterEach, expect, it, vi } from "vitest";
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
@@ -35,7 +35,9 @@ it("saves a customer's optional rating for the displayed published revision", as
     return new Response(JSON.stringify(url.endsWith("/maintenance-records/42") ? { ...serviceRecord, published: true, permissions: { ...serviceRecord.permissions, can_review: true } } : []));
   }));
   render(<MemoryRouter initialEntries={["/app/manutencoes/42"]}><Routes><Route path="/app/manutencoes/:recordId" element={<MaintenanceDetailPage />} /></Routes></MemoryRouter>);
-  fireEvent.change(await screen.findByLabelText("Nota de 1 a 5 estrelas"), { target: { value: "4" } });
+  const rating = await screen.findByLabelText("Nota de 1 a 5 estrelas");
+  await waitFor(() => expect(rating).toBeEnabled());
+  fireEvent.change(rating, { target: { value: "4" } });
   fireEvent.change(screen.getByLabelText("Comentário (opcional)"), { target: { value: "Bom atendimento" } });
   fireEvent.click(screen.getByRole("button", { name: "Salvar avaliação" }));
   expect(await screen.findByText("Avaliação salva.")).toBeInTheDocument();
