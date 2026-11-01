@@ -5,28 +5,20 @@ import { StatusPill } from "../../../components/ui/StatusPill";
 import { formatDate } from "../../../lib/format/date";
 import { formatMoney } from "../../../lib/format/money";
 import type { VehicleHistoryRecord } from "../../../lib/api/maintenance";
-
 type MaintenanceTimelineProps = {
-  records: VehicleHistoryRecord[];
+    records: VehicleHistoryRecord[];
 };
-
 export function MaintenanceTimeline({ records }: MaintenanceTimelineProps) {
-  if (records.length === 0) {
-    return (
-      <Panel title="Linha do tempo">
+    if (records.length === 0) {
+        return (<Panel title="Linha do tempo">
         <p className="muted">Nenhuma manutenção registrada para este veículo.</p>
-      </Panel>
-    );
-  }
-
-  return (
-    <Panel title="Linha do tempo">
+      </Panel>);
+    }
+    return (<Panel title="Linha do tempo">
       <div className="stack">
         {records.map((record) => {
-          const totalCost = Number(record.labor_cost ?? 0) + Number(record.parts_cost ?? 0);
-
-          return (
-            <article className="data-row" key={record.id}>
+            const totalCost = Number(record.labor_cost ?? 0) + Number(record.parts_cost ?? 0);
+            return (<article className="data-row" key={record.id}>
               <div>
                 <Link to={`/app/manutencoes/${record.id}`}>{record.visibility === "published" ? record.public_description : record.description}</Link>
                 <p>{record.visibility === "published" ? "Histórico publicado" : serviceStatus(record)}</p>
@@ -36,10 +28,8 @@ export function MaintenanceTimeline({ records }: MaintenanceTimelineProps) {
                 {record.odometer !== null ? <span className="muted">{record.odometer.toLocaleString("pt-BR")} km</span> : null}
                 {totalCost > 0 ? <strong>{formatMoney(totalCost)}</strong> : null}
               </div>
-            </article>
-          );
+            </article>);
         })}
       </div>
-    </Panel>
-  );
+    </Panel>);
 }

@@ -11,3 +11,6 @@
 .garage-summary{grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;}.garage-vehicle{display:grid;gap:16px;padding:24px;border:1px solid var(--color-border-strong);border-radius:6px;background:var(--color-surface);}.garage-vehicle>.panel{border:0;padding:0;background:transparent;}
 .form-grid>button,.form-grid>p,.form-grid>fieldset{grid-column:1/-1;}.form-grid fieldset{border:1px solid var(--color-border-strong);border-radius:4px;padding:16px;min-width:0;}.form-grid legend{padding:0 8px;}
 @media(max-width:600px){.garage-summary{grid-template-columns:repeat(2,minmax(0,1fr));}.garage-vehicle{padding:16px;}}
+
+.form-fieldset{border:0;padding:0;margin:0;min-width:0;}.standalone-page{padding:32px;}.page-section details summary{cursor:pointer;font-weight:600;}
+@media(max-width:600px){.standalone-page{padding:24px 16px;}}

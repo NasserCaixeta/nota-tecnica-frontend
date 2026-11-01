@@ -9,3 +9,10 @@ it("lists customer services awaiting explicit confirmation", async () => {
   render(<MemoryRouter><PendingServicesPage /></MemoryRouter>);
   expect(await screen.findByRole("link", { name: /Troca de óleo/ })).toHaveAttribute("href", "/app/manutencoes/42");
 });
+
+it("does not claim there are no invitations when the pending services request fails",async()=>{
+ vi.stubGlobal("fetch",vi.fn(async()=>new Response(JSON.stringify({detail:"Indisponível"}),{status:503})));
+ render(<MemoryRouter><PendingServicesPage/></MemoryRouter>);
+ expect(await screen.findByRole("alert")).toBeInTheDocument();
+ expect(screen.queryByText("Nenhum convite aguardando vínculo.")).not.toBeInTheDocument();
+});
