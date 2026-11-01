@@ -26,6 +26,6 @@
 }
 
 .status-pill--accent {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  border-color: var(--color-accent-text);
+  color: var(--color-accent-text);
 }
