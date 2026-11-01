@@ -1,6 +1,6 @@
 # Consistência visual do frontend Nota Técnica
 
-Data:30/10/2026. Estado: proposta para revisão do usuário, sem autorização de implementação nesta solicitação. Pedido: investigar o frontend e planejar correção da falta de identidade visual, começando pelo painel administrativo. Execução direta/main/commits separados são preferências já registradas, aplicáveis quando a implementação for solicitada.
+Data:30/10/2026. Execução autorizada pelo usuário em01/11/2026, diretamente na main com commits separados. O diagnóstico abaixo registra a situação anterior. Resultados e limites: [relatório de validação](../validation/2026-10-30-frontend-consistency.md).
 
 ## Objetivo
 
