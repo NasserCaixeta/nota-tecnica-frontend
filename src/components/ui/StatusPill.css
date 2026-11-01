@@ -29,3 +29,5 @@
   border-color: var(--color-accent-text);
   color: var(--color-accent-text);
 }
+
+.status-pill{justify-self:start;max-width:100%;white-space:normal;}
