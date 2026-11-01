@@ -20,7 +20,7 @@ it("approves a pending participant with the current version and reason", async (
     return new Response(JSON.stringify(approved ? [] : [{ ...participant, participation_status: "pending" }]));
   }));
   render(<RouterProvider router={createMemoryRouter(routes, { initialEntries: ["/admin/participantes"] })} />);
-  expect(await screen.findByText("Maria Driver")).toBeInTheDocument();
+  expect(await screen.findByRole("heading", { name: "Maria Driver" })).toBeInTheDocument();
   fireEvent.change(screen.getByLabelText("Justificativa para Maria Driver"), { target: { value: "Participante do piloto" } });
   fireEvent.click(screen.getByRole("button", { name: "Aprovar Maria Driver" }));
   expect(await screen.findByText("Nenhum participante nesta fila.")).toBeInTheDocument();

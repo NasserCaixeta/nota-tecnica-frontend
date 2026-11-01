@@ -1,6 +1,6 @@
-import { useId, type InputHTMLAttributes } from "react";
+import { useId, type ReactNode, type InputHTMLAttributes } from "react";
 import styles from "./Input.module.css";
-type InputProps = InputHTMLAttributes<HTMLInputElement> & { fieldClassName?: string; label?: string; hint?: string; error?: string };
+type InputProps = InputHTMLAttributes<HTMLInputElement> & { fieldClassName?: string; label?: ReactNode; hint?: string; error?: string };
 export function Input({ id, label, hint, error, className="", fieldClassName="", "aria-describedby": describedBy, ...props }: InputProps) {
  const generatedId=useId(); const fieldId=id ?? props.name ?? generatedId;
  const description=[describedBy, hint ? fieldId+"-hint" : "", error ? fieldId+"-error" : ""].filter(Boolean).join(" ") || undefined;

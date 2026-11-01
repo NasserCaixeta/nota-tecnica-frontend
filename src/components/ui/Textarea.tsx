@@ -1,6 +1,6 @@
-import { useId, type TextareaHTMLAttributes } from "react";
+import { useId, type ReactNode, type TextareaHTMLAttributes } from "react";
 import styles from "./Input.module.css";
-type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & { fieldClassName?: string; label?: string; hint?: string; error?: string };
+type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> & { fieldClassName?: string; label?: ReactNode; hint?: string; error?: string };
 export function Textarea({ id, label, hint, error, className="", fieldClassName="", "aria-describedby": describedBy, ...props }: TextareaProps) {
  const generatedId=useId(); const fieldId=id ?? props.name ?? generatedId;
  const description=[describedBy, hint ? fieldId+"-hint" : "", error ? fieldId+"-error" : ""].filter(Boolean).join(" ") || undefined;

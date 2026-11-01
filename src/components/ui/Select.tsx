@@ -1,6 +1,6 @@
-import { useId, type SelectHTMLAttributes } from "react";
+import { useId, type ReactNode, type SelectHTMLAttributes } from "react";
 import styles from "./Input.module.css";
-type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & { fieldClassName?: string; label?: string; hint?: string; error?: string };
+type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & { fieldClassName?: string; label?: ReactNode; hint?: string; error?: string };
 export function Select({ id, label, hint, error, className="", fieldClassName="", "aria-describedby": describedBy, ...props }: SelectProps) {
  const generatedId=useId(); const fieldId=id ?? props.name ?? generatedId;
  const description=[describedBy, hint ? fieldId+"-hint" : "", error ? fieldId+"-error" : ""].filter(Boolean).join(" ") || undefined;
