@@ -20,6 +20,7 @@ export function WorkshopClaimsPage() {
         setLoading(true);
         try {
             setClaims(await listPendingWorkshopClaims());
+            setError(null);
         }
         catch {
             setError("Não foi possível carregar as solicitações de oficina.");
