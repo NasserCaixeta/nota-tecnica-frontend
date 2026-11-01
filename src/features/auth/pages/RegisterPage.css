@@ -15,7 +15,7 @@
 .register-page__label,
 .register-benefit__number,
 .register-form__section-label {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 3px;

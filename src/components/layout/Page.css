@@ -1,6 +1,6 @@
 .page-section{display:grid;gap:24px;width:100%;min-width:0;max-width:1200px;margin-inline:auto;overflow-wrap:anywhere;}
 .page-section h1,.page-section h2,.page-section h3,.page-section p{margin:0;}.page-section h1{font-size:28px;letter-spacing:-.8px;line-height:1.2;}.page-section h2{font-size:19px;line-height:1.4;}.page-section h3{font-size:15px;}
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--color-border-strong);}.page-header>div{display:grid;gap:8px;min-width:0;}.page-header .muted{max-width:72ch;font-size:14px;line-height:1.65;}
+.page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--color-border-strong);}.page-header>div:first-child{display:grid;gap:8px;min-width:0;}.page-header .muted{max-width:72ch;font-size:14px;line-height:1.65;}
 .stack{display:grid;gap:16px;min-width:0;}.muted{color:var(--color-muted);}.eyebrow{color:var(--color-accent-text);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;}
 .action-group{display:flex;flex-wrap:wrap;align-items:center;gap:8px;}.data-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:16px 0;border-bottom:1px solid var(--color-border-strong);min-width:0;}.data-row:last-child{border-bottom:0;}.data-row>div{min-width:0;}.data-row__meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px;font-size:12px;}
 .checkbox-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:12px;}.checkbox-grid label{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--color-border-strong);border-radius:4px;font-size:13px;}.checkbox-grid input{accent-color:var(--color-accent);width:18px;height:18px;}
@@ -14,3 +14,5 @@
 
 .form-fieldset{border:0;padding:0;margin:0;min-width:0;}.standalone-page{padding:32px;}.page-section details summary{cursor:pointer;font-weight:600;}
 @media(max-width:600px){.standalone-page{padding:24px 16px;}}
+
+.recovery-page{max-width:680px;margin:32px auto;}.payment-page{display:grid;gap:24px;}

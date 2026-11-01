@@ -14,7 +14,7 @@
 
 .login-page__label,
 .login-benefit__number {
-  color: var(--color-accent);
+  color: var(--color-accent-text);
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 3px;

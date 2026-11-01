@@ -9,10 +9,10 @@ export function HeroPlateSearch() {
         <br />
         por dados.
         <br />
-        <em>Não por estrelas.</em>
+        <em>Serviços comprovados.</em>
       </h1>
       <p className="landing-hero__copy">
-        Consulte históricos pela página dedicada e encontre oficinas avaliadas por preço, prazo e taxa de retrabalho.
+        Consulte históricos e compare oficinas pela avaliação dos clientes, cumprimento de prazos e volume de serviços comprovados. Cada nota informa sua amostra.
       </p>
       <div className="landing-hero__actions">
         <Link className="landing-button landing-button--primary" to="/consultar">
