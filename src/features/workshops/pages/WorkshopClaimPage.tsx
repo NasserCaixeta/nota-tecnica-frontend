@@ -1,3 +1,4 @@
+import { PageHeader } from "../../../components/layout/PageHeader";
 import { Button } from "../../../components/ui/Button";
 import { Input } from "../../../components/ui/Input";
 import { useCallback, useEffect, useState, type FormEvent } from "react";
@@ -74,10 +75,10 @@ export function WorkshopClaimPage() {
             setBusy(false);
         }
     }
-    return <section className="page-section"><h1>Representar uma oficina</h1>
+    return <section className="page-section"><PageHeader title="Representar uma oficina"/>
     <p>Sua conta continua com acesso de cliente. A representação da oficina passa por uma análise própria.</p>
     {error && <p className="message" role="alert">{error}</p>}{message && <p className="message" role="status">{message}</p>}
-    <form onSubmit={search}><Input value={cnpj} onChange={event => setCnpj(event.target.value)} required label="CNPJ da oficina"/><Button disabled={busy}>Buscar oficina</Button></form>
+    <form className="panel stack" onSubmit={search}><Input value={cnpj} onChange={event => setCnpj(event.target.value)} required label="CNPJ da oficina"/><Button disabled={busy}>Buscar oficina</Button></form>
     {office && <article><h2>{office.trade_name}</h2><p>{office.cnpj}</p><Button disabled={busy} onClick={() => void request(office.id)} variant="secondary">Solicitar representação</Button></article>}
     <Link to="/app/oficinas/nova">Cadastrar uma oficina que ainda não está na base</Link>
     <h2>Suas solicitações</h2>

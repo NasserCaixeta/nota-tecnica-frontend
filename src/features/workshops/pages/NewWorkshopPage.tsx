@@ -1,3 +1,4 @@
+import { PageHeader } from "../../../components/layout/PageHeader";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { createWorkshop, type WorkshopPayload } from "../../../lib/api/workshops";
@@ -23,8 +24,9 @@ export function NewWorkshopPage() {
         }
     }
     return (<section className="page-section">
+      <PageHeader title="Cadastrar oficina"/>
       <p>{reference ? "Cadastre o estabelecimento como referência para o atendimento. Isso não concede gestão da oficina." : "Após o cadastro, envie os documentos de representação. A gestão será liberada depois da aprovação."}</p>
       <WorkshopForm source={reference ? "user_submitted" : "owner_claimed"} isSubmitting={isSubmitting} onSubmit={handleSubmit}/>
-      {error ? <p className="form-error">{error}</p> : null}
+      {error ? <p className="form-error" role="alert">{error}</p> : null}
     </section>);
 }

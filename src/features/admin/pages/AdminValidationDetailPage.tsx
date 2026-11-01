@@ -63,7 +63,7 @@ export function AdminValidationDetailPage() {
         }
     }
     if (loading && !item)
-        return <StateBlock title="Carregando validação"/>;
+        return <StateBlock kind="loading" title="Carregando validação"/>;
     return <section className="page-section"><PageHeader title="Análise do vínculo veicular" description="Revise cada comprovante e registre a decisão sobre o vínculo com o veículo."/>
     {error && <p role="alert">{error} <Button onClick={() => void load()} variant="secondary">Atualizar análise</Button></p>}
     {message && <p role="status">{message}</p>}

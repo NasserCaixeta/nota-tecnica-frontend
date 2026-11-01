@@ -52,6 +52,6 @@ export function PilotStatusPage() {
     {message && <p className="message" role="status">{message}</p>}{error&&<p className="message" role="alert">{error}</p>}
     {user.participation_status === "rejected" && <Button type="button" onClick={() => void resubmit()}>Reenviar solicitação</Button>}
     <Button type="button" onClick={() => void refresh()} variant="secondary">Atualizar situação</Button>
-    <Button type="button" onClick={logout}>Sair</Button>
+    <Button variant="ghost" type="button" onClick={logout}>Sair</Button>
   </section>;
 }

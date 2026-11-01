@@ -82,7 +82,7 @@ export function GarageVehicleDocumentsPage() {
       {vehicle.verification_rejection_reason && <p>{vehicle.verification_rejection_reason}</p>}
       <DocumentChecklist vehicle={vehicle}/>
       <p>Comprovantes pessoais ficam restritos a você e à administração. Formatos aceitos: PDF, JPEG, PNG e WebP, até 10 MiB.</p>
-      {vehicle.documents.required.map(kind => <Input type="file" accept="application/pdf,image/jpeg,image/png,image/webp" disabled={busy || loading || !vehicle.permissions.can_upload_documents} onChange={event => {
+      {vehicle.documents.required.map(kind => <Input key={kind} type="file" accept="application/pdf,image/jpeg,image/png,image/webp" disabled={busy || loading || !vehicle.permissions.can_upload_documents} onChange={event => {
                     const file = event.target.files?.[0];
                     if (file)
                         void upload(kind, file);

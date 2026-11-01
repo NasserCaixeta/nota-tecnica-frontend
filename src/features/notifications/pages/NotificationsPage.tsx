@@ -42,7 +42,7 @@ export function NotificationsPage() {
     {!loading && notifications.map((notification) => <article className="panel stack" key={notification.id}>
       <h2>{notification.title}</h2><p>{notification.body}</p><p>{new Date(notification.created_at).toLocaleString("pt-BR")}</p>
       {notification.link && <p><Link to={notification.link}>Ver pendência</Link></p>}
-      {notification.read_at ? <p>Lida</p> : <Button disabled={busy !== null} onClick={() => void read(notification.id)}>Marcar como lida</Button>}
+      {notification.read_at ? <p>Lida</p> : <Button variant="secondary" disabled={busy !== null} onClick={() => void read(notification.id)}>Marcar como lida</Button>}
     </article>)}
     <p><Button disabled={loading || busy !== null} onClick={() => setRefresh((value) => value + 1)} variant="secondary">Atualizar notificações</Button></p>
   </section>;
