@@ -89,3 +89,10 @@ PLAYWRIGHT_BROWSERS_PATH=/private/tmp/nota-tecnica-playwright npm run test:e2e
 A suíte Playwright recria somente o banco local com sufixo `_test`, seguindo as proteções já existentes. As novas fixtures interceptam rotas GET explícitas; gravações exigem handler específico do cenário e nunca são encaminhadas à VPS. Autenticação das jornadas reais continua independente das capturas sintéticas.
 
 Evidências locais privadas em `/private/tmp/nota-tecnica-client-validation-20261109/`: `checks.log`, `audit.log`, `full-suite.log`, `matrix-final.log`, capturas sintéticas em `screenshots/` e capturas reais em `production/`. O browser conectado estava indisponível; a inspeção usou o Playwright do próprio projeto. SMTP, R2, cobrança real, todas as combinações de negócio e zoom nativo não foram homologados por esta validação de telas.
+
+## Commits e estado remoto
+
+- `2cdf16d`: matriz de telas, fixtures e cenários funcionais.
+- `64b5e93`: relatório da validação, enviado à main.
+- Vercel: deployment7664885662 concluído com sucesso para64b5e93; nenhuma mudança de código do produto.
+- [GitHub Actions42690534711](https://github.com/NasserCaixeta/nota-tecnica-frontend/actions/runs/42690534711): job sem qualquer etapa executada. A anotação oficial informa: “The job was not started because your account is locked due to a billing issue.” Não é uma falha dos testes: o runner não iniciou. Os resultados locais88/88 unitários,48/48 de navegador, lint, build, TypeScript e auditoria sem vulnerabilidades permanecem como evidência; o CI remoto precisa ser reexecutado depois de regularizar a cobrança da conta GitHub.
